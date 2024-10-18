@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uts_2022130019/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -59,12 +60,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 20),
                           FilledButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //   builder: (context) => const HomeScreen(),
-                              //   )
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                                )
+                              );
                             },
                             style: ButtonStyle(
                               backgroundColor: WidgetStateProperty.all<Color>(const Color.fromRGBO(36, 41, 62, 1)),
