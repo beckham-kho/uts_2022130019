@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uts_2022130019/cart_screen.dart';
 import 'package:uts_2022130019/model/product_list.dart';
 import 'package:uts_2022130019/product_screen.dart';
 
@@ -111,7 +112,14 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) => const CartScreen(),
+            )
+          );
+        },
         tooltip: 'Add Product to Cart',
         child: const Icon(Icons.shopping_cart_rounded),
       ),
