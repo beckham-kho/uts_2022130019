@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uts_2022130019/model/product_list.dart';
+import 'package:uts_2022130019/product_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -69,14 +71,49 @@ class HomeScreen extends StatelessWidget {
                   child: GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                     itemBuilder: (BuildContext context, int index) {
-                      
+                      final Product product = productList[index];
+                      return Card(
+                        child: InkWell(
+                          splashColor: const Color.fromRGBO(142, 187, 255, 1),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                              builder: (context) => ProductScreen(product: product,),
+                              )
+                            );
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Image.asset(
+                                product.image,
+                                height: 100,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  product.title,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
+                    itemCount: productList.length,
                   ),
                 ),
               ],
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Add Product to Cart',
+        child: const Icon(Icons.shopping_cart_rounded),
       ),
     );
   }
