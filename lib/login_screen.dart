@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:uts_2022130019/home_screen.dart';
+import 'package:uts_2022130019/model/user_data.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
+    TextEditingController emailController =  TextEditingController();
+    TextEditingController passwordController =  TextEditingController();
+    UserData user = UserData();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -31,48 +33,75 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 30.0,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30, left: 50, right: 50),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          const Text(
-                            'Email',
-                            textAlign: TextAlign.start,
-                          ),
-                          const TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Enter your email...'
+                    Form(
+                      key: _formKey,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30, left: 50, right: 50),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            const Text(
+                              'Email',
+                              textAlign: TextAlign.start,
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          const Text(
-                            'Password',
-                            textAlign: TextAlign.start,
-                          ),
-                          const TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Enter your password...'
+                            TextFormField(
+                              controller: emailController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Enter your email...'
+                              ),
+                              validator: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter your email!';
+                                }
+                                return null;
+                              },
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          FilledButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
-                                )
-                              );
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all<Color>(const Color.fromRGBO(36, 41, 62, 1)),
+                            const SizedBox(height: 20),
+                            const Text(
+                              'Password',
+                              textAlign: TextAlign.start,
                             ),
-                            child: const Text('Login'),
-                          ),
-                        ],
+                            TextFormField(
+                              controller: passwordController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Enter your password...'
+                              ),
+                              validator: (value) {
+                                if(value!.isEmpty) {
+                                  return 'Please enter your password!';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            FilledButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  if(emailController.text == user.email && passwordController.text == user.password) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                      builder: (context) => const HomeScreen(),
+                                      )
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Email or password incorrect!')
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all<Color>(const Color.fromRGBO(36, 41, 62, 1)),
+                              ),
+                              child: const Text('Login'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
