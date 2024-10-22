@@ -11,22 +11,39 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final existingProductCart = ModalRoute.of(context)!.settings.arguments as CartProduct?;
-    final isChangeTotalItem = existingProductCart != null;
-
     return Scaffold(
       body: Consumer<CartProvider>(
         builder: (context, counter, child) {
           return SingleChildScrollView(
             child: SizedBox(
-              height: MediaQuery.sizeOf(context).height,
+              height: MediaQuery.sizeOf(context).height-40,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Image.asset(product.image),
+                      Stack(
+                        children: <Widget>[
+                          Image.asset(product.image),
+                          SafeArea(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 15, top: 5),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                child: IconButton(
+                                  icon: const Icon(Icons.arrow_back),
+                                  color: const Color.fromRGBO(204, 204, 204, 1),
+                                  onPressed: () {
+                                    counter.value = 1;
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: Column(
@@ -35,7 +52,8 @@ class ProductScreen extends StatelessWidget {
                             Text(
                               product.title,
                               style: const TextStyle(
-                                fontSize: 25,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
@@ -83,7 +101,13 @@ class ProductScreen extends StatelessWidget {
                                 ),
                                 child: InkWell(
                                   child: const Icon(Icons.remove),
-                                  onTap: () {counter.value--;},
+                                  onTap: () {
+                                    if(counter.value == 1) {
+                                      counter.value == 1;
+                                    } else {
+                                      counter.value--;
+                                    }
+                                  },
                                 ),
                               ),
                               Text((counter.value).toString()),
@@ -105,6 +129,9 @@ class ProductScreen extends StatelessWidget {
                           ),
                         ),
                         ElevatedButton(
+                          style: const ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll( Color.fromRGBO(142, 187, 255, 1),),
+                          ),
                           onPressed: () {
                             final newAddedProduct = CartProduct(
                               title: product.title,
@@ -112,13 +139,21 @@ class ProductScreen extends StatelessWidget {
                               price: product.price,
                               totalItem: counter.value
                             );
-                            if(isChangeTotalItem) {
-                              context.read<CartProvider>().editContact(newAddedProduct);
-                            } else {
-                              context.read<CartProvider>().addProductCart(newAddedProduct);
-                            }
+                            
+                            context.read<CartProvider>().addProductCart(newAddedProduct);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Product added to cart successfully!')
+                              ),
+                            );
                           },
-                          child: const Text('Add to Cart'),
+                          child: const Text(
+                            'Add to Cart',
+                            style: TextStyle(
+                              color: Color.fromRGBO(244, 245, 252, 1),
+                            ),
+                          ),
                         ),
                       ],
                     ),
