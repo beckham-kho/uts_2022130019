@@ -8,7 +8,6 @@ class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key, required this.product});
   final Product product;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +24,11 @@ class ProductScreen extends StatelessWidget {
                     children: <Widget>[
                       Stack(
                         children: <Widget>[
-                          Image.asset(product.image),
+                          Image.asset(
+                            product.image,
+                            width: MediaQuery.sizeOf(context).width,
+                            height: 300,
+                          ),
                           SafeArea(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 15, top: 5),
@@ -133,13 +136,13 @@ class ProductScreen extends StatelessWidget {
                             backgroundColor: WidgetStatePropertyAll( Color.fromRGBO(142, 187, 255, 1),),
                           ),
                           onPressed: () {
+                            counter.checkoutTotalPrice = counter.checkoutTotalPrice + counter.value * product.price;
                             final newAddedProduct = CartProduct(
                               title: product.title,
                               image: product.image,
                               price: product.price,
                               totalItem: counter.value
                             );
-                            
                             context.read<CartProvider>().addProductCart(newAddedProduct);
 
                             ScaffoldMessenger.of(context).showSnackBar(

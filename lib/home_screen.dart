@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:uts_2022130019/cart_screen.dart';
+import 'package:uts_2022130019/login_screen.dart';
 import 'package:uts_2022130019/model/product_list.dart';
 import 'package:uts_2022130019/product_screen.dart';
+import 'package:uts_2022130019/setting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _foundProduct = results;
     });
-
   }
 
   @override
@@ -77,14 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.person_rounded),
-              title: const Text('Profile'),
+              title: const Text('Settings'),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //   builder: (context) => const SettingScreen(),
-                //   )
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                  builder: (context) => const SettingScreen(),
+                  )
+                );
               },
             ),
             ListTile(
@@ -96,6 +97,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(
                   builder: (context) => const CartScreen(),
                   )
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout_rounded),
+              title: const Text('Logout'),
+              onTap: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  (Route<dynamic> route) => false,
                 );
               },
             ),

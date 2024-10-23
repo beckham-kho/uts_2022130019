@@ -9,11 +9,11 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<CartProvider>(
-        builder: (context, value, child) {
+        builder: (context, counter, child) {
           return SafeArea(
             child: SingleChildScrollView(
               child: SizedBox(
-                height: MediaQuery.sizeOf(context).height-50,
+                height: MediaQuery.sizeOf(context).height-100,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -51,15 +51,19 @@ class CartScreen extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height:  MediaQuery.sizeOf(context).height-200,
+                      height:  MediaQuery.sizeOf(context).height-300,
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
-                          final cart = value.cartProducts[index];
-
+                          final cart = counter.cartProducts[index];
+                          int subtotal = cart.price*cart.totalItem;
                           return ListTile(
-                            leading: Image.asset(cart.image),
+                            leading: 
+                            SizedBox(
+                              width: 100,
+                              child: Image.asset(cart.image),
+                            ),
                             trailing: Text(
-                              'Rp. ${(cart.price*cart.totalItem)}',
+                              'Rp. ${subtotal.toString()}',
                               style: const TextStyle(
                                 fontSize: 20.0,
                               ),
@@ -68,7 +72,7 @@ class CartScreen extends StatelessWidget {
                             subtitle: Text('Rp.${cart.price} x ${cart.totalItem}'),
                           );
                         },
-                        itemCount: value.cartProducts.length,
+                        itemCount: counter.cartProducts.length,
                       ),
                     ),
                     Padding(
@@ -76,16 +80,30 @@ class CartScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          const Text(
-                            'Ini total checkout',
-                            style: TextStyle(
+                          Text(
+                            'Rp. ${counter.checkoutTotalPrice}',
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20.0,
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Add to Cart'),
+                            style: const ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll( Color.fromRGBO(142, 187, 255, 1),),
+                            ),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Checkout successfully!')
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'Checkout',
+                              style: TextStyle(
+                                color: Color.fromRGBO(244, 245, 252, 1),
+                              ),
+                            ),
                           ),
                         ],
                       ),

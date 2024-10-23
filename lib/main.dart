@@ -5,7 +5,7 @@ import 'package:uts_2022130019/providers/cart_provider.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => CartProvider(1),
+      create: (context) => CartProvider(1, 0),
       child: const MyApp(),
     ),
   );
